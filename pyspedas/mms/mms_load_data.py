@@ -96,8 +96,7 @@ def mms_load_data(trange=['2015-10-16', '2015-10-17'], probe='1', data_rate='srv
 
                                 if CONFIG['debug_mode']: logging.info('File: ' + file['file_name'] + ' / ' + file['timetag'])
 
-                                #if os.path.exists(out_file) and str(os.stat(out_file).st_size) == str(file['file_size']):
-                                if os.path.exists(out_file):
+                                if os.path.exists(out_file) and str(os.stat(out_file).st_size) == str(file['file_size']):
                                     if not download_only: logging.info('Loading ' + out_file)
                                     out_files.append(out_file)
                                     continue
@@ -111,7 +110,9 @@ def mms_load_data(trange=['2015-10-16', '2015-10-17'], probe='1', data_rate='srv
 
                                 fsrc = sdc_session.get(download_url, stream=True, verify=True)
                                 ftmp = NamedTemporaryFile(delete=False)
-                                copyfileobj(fsrc.raw, ftmp)
+
+                                with open(ftmp.name, 'wb') as f:
+                                    copyfileobj(fsrc.raw, f)
 
                                 if not os.path.exists(out_dir):
                                     os.makedirs(out_dir)
@@ -119,6 +120,7 @@ def mms_load_data(trange=['2015-10-16', '2015-10-17'], probe='1', data_rate='srv
                                 # if the download was successful, copy to data directory
                                 copy(ftmp.name, out_file)
                                 out_files.append(out_file)
+                                fsrc.close()
                                 ftmp.close()
                         except requests.exceptions.ConnectionError:
                             # No/bad internet connection; try loading the files locally
@@ -155,6 +157,8 @@ def mms_load_data(trange=['2015-10-16', '2015-10-17'], probe='1', data_rate='srv
                 tclip(new_var, trange[0], trange[1], suffix='')
 
         return new_variables
+    else:
+        return out_files
 
 
 
