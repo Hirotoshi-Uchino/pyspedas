@@ -40,19 +40,19 @@ import os
 import pytplot
 import pyspedas
 
-
 def omni_filename(dates, level):
     """Create a list of tuples for downloading: remote_file, local_file"""
-    prefs = pyspedas.get_spedas_prefs()
+    prefs = pyspedas.Config().get_config()
+
     if 'omni_remote' in prefs:
         remote_path = prefs['omni_remote']
     else:
-        raise NameError('remote_path is not found in spd_prefs.txt')
+        raise NameError('remote_path is not found.')
     if 'data_dir' in prefs:
         data_dir = prefs['data_dir'] + 'omni'
 
     else:
-        raise NameError('data_dir is not found in spd_prefs.txt')
+        raise NameError('data_dir is not found')
 
     if level != '1min':
         level = '5min'

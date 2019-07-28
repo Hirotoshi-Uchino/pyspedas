@@ -169,16 +169,17 @@ def check_greenland(station_name):
 
 def gmag_filename(dates, stations):
     """Create a list of tuples for downloading: remote_file, local_file"""
-    prefs = pyspedas.get_spedas_prefs()
+    # prefs = pyspedas.get_spedas_prefs()
+    prefs = pyspedas.Config().get_config()
     if 'themis_remote' in prefs:
         remote_path = prefs['themis_remote']
     else:
-        raise NameError('remote_path is not found in spd_prefs.txt')
+        raise NameError('remote_path is not found')
     if 'data_dir' in prefs:
         data_dir = prefs['data_dir']
 
     else:
-        raise NameError('data_dir is not found in spd_prefs.txt')
+        raise NameError('data_dir is not found')
 
     dates = pyspedas.get_dates(dates)
 

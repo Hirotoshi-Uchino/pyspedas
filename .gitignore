@@ -231,3 +231,5 @@ dmypy.json
 .dropbox.attr
 .dropbox.cache
 
+# Idea
+.idea
